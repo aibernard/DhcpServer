@@ -36,7 +36,20 @@ pub fn start_listener() {
     // iface为&interface
     let interface = interfaces
         .into_iter()
-        .find(|iface| iface.is_up() && !iface.is_loopback() && !iface.ips.is_empty())
+        .find(|iface| {
+                if iface.is_loopback() {
+                    return false;
+                }
+
+                if iface.ips.is_empty() {
+                    return false;
+                }
+
+                iface.ips.iter().any(|ip_net| {
+                    let ip_str = ip_net.ip().to_string();
+                    ip_str != "0.0.0.0" && !ip_str.starts_with("169.254.") && !ip_str.starts_with("127.")
+                })
+            })
         .expect("致命错误: 没有找到合适的活跃网卡！请检查网络或是否安装了 Npcap。");
 
     println!("========================================");
