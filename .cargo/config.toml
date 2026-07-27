@@ -1,0 +1,5 @@
+# 文件路径: D:\Workspace\Rust\DhcpServer\.cargo\config.toml
+[target.x86_64-pc-windows-msvc]
+# 告诉 MSVC 链接器去哪里找 Packet.lib
+# 注意：一定要指向 Lib/x64 目录，因为你的 Rust 工具链是 64 位的
+rustflags = ["-L", "native=D:\\Workspace\\SDK\\Lib\\x64"]
