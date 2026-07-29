@@ -55,6 +55,10 @@ pub fn start_listener() {
     println!("========================================");
     println!("🚀 成功锁定监听网卡: {}", interface.name);
     println!("📍 网卡 MAC 地址: {:?}", interface.mac);
+    println!("desc: {}", interface.description);
+    println!("index: {}", interface.index);
+    println!("mac: {:#?}", interface.mac);
+    println!("all ips: {:#?}", interface.ips);
     println!("========================================");
 
     // 在这个网卡上打开一个数据链路层的通道
@@ -72,7 +76,7 @@ pub fn start_listener() {
             Ok(packet) => {
                 // 这里的 packet 类型是 &[u8]，即“字节切片”。
                 // 它是零拷贝 (Zero-Copy) 的！它的内存就在网卡驱动的缓冲区里，我们只是借用 (Borrow) 了它。
-                println!("[网络中断] 捕获数据包，大小: {} bytes", packet.len());
+                crate::network::parser::parse_raw_packet(packet);
             },
             Err(e) => {
                 // 如果发生瞬时错误，比如网卡短暂离线，不应该让程序崩溃，打印错误即可
