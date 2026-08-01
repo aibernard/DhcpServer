@@ -4,3 +4,5 @@
 
 pub mod listeners;
 pub mod parser;
+pub mod options;
+pub mod dhcp_packet;
